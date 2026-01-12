@@ -1,0 +1,260 @@
+/* Focus Mode Styles - Apple Inspired */
+
+.focus-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - var(--header-height) - var(--space-16));
+  padding: var(--space-4);
+}
+
+.focus-container {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  align-items: center;
+  animation: springIn 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.focus-mode-switcher {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: var(--space-8);
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: var(--font-weight-bold);
+  color: var(--grey-400);
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mode-btn.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* Timer Section - iOS Style */
+.focus-timer-section {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-ring-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+  fill: transparent;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 4;
+}
+
+.progress-ring-fill {
+  fill: transparent;
+  stroke: var(--color-accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.progress-ring-fill.break-mode {
+  stroke: var(--color-success);
+}
+
+.timer-content {
+  text-align: center;
+  z-index: 1;
+}
+
+.timer-value {
+  font-size: 5rem;
+  font-weight: var(--font-weight-light); /* Apple uses light weights for timers */
+  font-family: var(--font-family);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: #fff;
+}
+
+.timer-target {
+  font-size: 11px;
+  font-weight: var(--font-weight-bold);
+  margin-top: var(--space-2);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey-500);
+}
+
+/* Task Details */
+.focus-task-details {
+  width: 100%;
+  text-align: center;
+}
+
+.task-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.focus-task-details h2 {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.04em;
+  margin-bottom: 4px;
+}
+
+.focus-task-details p {
+  font-size: var(--font-size-base);
+  color: var(--grey-400);
+}
+
+/* Controls - Apple Style */
+.focus-controls-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.main-controls {
+  display: flex;
+  justify-content: center;
+}
+
+.focus-main-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-base);
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--color-accent);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-base);
+}
+
+.focus-main-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
+  transform: scale(1.05);
+}
+
+.focus-main-btn:active {
+  transform: scale(0.95);
+}
+
+.secondary-controls {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+}
+
+.secondary-controls .btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 10px 24px;
+  font-size: 13px;
+  font-weight: var(--font-weight-bold);
+  color: #fff;
+}
+
+/* Queue - iOS List Style */
+.focus-queue-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.queue-header h4 {
+  font-size: 11px;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--grey-500);
+  padding-left: 4px;
+}
+
+.queue-list {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.queue-item:last-child {
+  border-bottom: none;
+}
+
+.queue-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.queue-name {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: #fff;
+}
+
+/* Empty State */
+.focus-empty {
+  text-align: center;
+  animation: springIn 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.empty-icon-container {
+  width: 80px;
+  height: 80px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-6);
+  color: var(--color-accent);
+}
+
+@media (max-width: 768px) {
+  .progress-ring-container {
+    width: 260px;
+    height: 260px;
+  }
+}
