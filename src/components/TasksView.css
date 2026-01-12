@@ -3,6 +3,7 @@
 .tasks-view {
   max-width: 900px;
   margin: 0 auto;
+  padding: 0 var(--space-16);
 }
 
 .header-content h1 {
@@ -47,11 +48,10 @@
 }
 
 .form-label {
-  font-size: 11px;
-  font-weight: var(--font-weight-bold);
-  color: var(--grey-500);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  color: #ffffff;
+  letter-spacing: 0.02em;
   padding-left: 4px;
 }
 
@@ -70,7 +70,7 @@
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--grey-500);
+  color: var(--grey-400);
 }
 
 .input-with-icon .input {
@@ -136,7 +136,7 @@
 .timeline-date h3 {
   font-size: 18px;
   font-weight: var(--font-weight-bold);
-  color: var(--grey-500);
+  color: var(--grey-300);
   margin: 0;
 }
 
@@ -169,7 +169,7 @@
 }
 
 .task-checkbox {
-  color: var(--grey-500);
+  color: var(--grey-300);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -197,13 +197,13 @@
 }
 
 .task-duration, .task-recurrence, .task-dependencies {
-  font-size: 11px;
-  color: var(--grey-500);
+  font-size: 12px;
+  color: var(--grey-300);
   display: flex;
   align-items: center;
   gap: 6px;
   background: rgba(255, 255, 255, 0.05);
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 6px;
 }
 

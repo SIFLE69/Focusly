@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { GraduationCap, Briefcase, TrendingUp, ChevronRight, Zap, ArrowLeft, Check, X } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { GraduationCap, Briefcase, TrendingUp, ChevronRight, Zap, ArrowLeft, Check, X, Plus } from 'lucide-react';
 import { ROLE_CONFIG, ROLES, generateWorkspaceTemplate, generateStarterContent } from '../config/roles';
 import dbService from '../services/database';
 import { useModal } from '../context/ModalContext';
@@ -19,6 +19,7 @@ function Onboarding({ onComplete }) {
     const [formData, setFormData] = useState({});
     const [isCreating, setIsCreating] = useState(false);
     const { showAlert } = useModal();
+    const multiTextRefs = useRef({});
 
     const handleRoleSelect = (role) => {
         setSelectedRole(role);
@@ -27,11 +28,18 @@ function Onboarding({ onComplete }) {
         const config = ROLE_CONFIG[role];
         const defaults = {};
         config.onboardingQuestions.forEach(q => {
-            if (q.default !== undefined) {
-                defaults[q.id] = q.default;
+            if (q.type === 'multi-text' || q.type === 'date-list') {
+                defaults[q.id] = [];
+            } else if (q.type === 'number') {
+                defaults[q.id] = q.default || '';
+            } else if (q.type === 'select') {
+                defaults[q.id] = '';
+            } else {
+                defaults[q.id] = q.default || '';
             }
         });
         setFormData(defaults);
+        console.log('Form initialized with:', defaults);
 
         setStep('context-collection');
     };
@@ -46,10 +54,14 @@ function Onboarding({ onComplete }) {
     const handleMultiTextAdd = (questionId, value) => {
         if (!value.trim()) return;
 
-        setFormData(prev => ({
-            ...prev,
-            [questionId]: [...(prev[questionId] || []), value.trim()]
-        }));
+        setFormData(prev => {
+            const updated = {
+                ...prev,
+                [questionId]: [...(prev[questionId] || []), value.trim()]
+            };
+            console.log(`Added "${value.trim()}" to ${questionId}. New value:`, updated[questionId]);
+            return updated;
+        });
     };
 
     const handleMultiTextRemove = (questionId, index) => {
@@ -59,22 +71,91 @@ function Onboarding({ onComplete }) {
         }));
     };
 
+    const handleDateAdd = (questionId, value) => {
+        if (!value) return;
+
+        setFormData(prev => ({
+            ...prev,
+            [questionId]: [...(prev[questionId] || []), value]
+        }));
+    };
+
+    const handleDateRemove = (questionId, index) => {
+        setFormData(prev => ({
+            ...prev,
+            [questionId]: prev[questionId].filter((_, i) => i !== index)
+        }));
+    };
+
     const canProceed = () => {
-        if (!selectedRole) return false;
+        if (!selectedRole) {
+            console.log('Cannot proceed: No role selected');
+            return false;
+        }
 
         const config = ROLE_CONFIG[selectedRole];
         const requiredQuestions = config.onboardingQuestions.filter(q => q.required);
 
-        return requiredQuestions.every(q => {
+        const result = requiredQuestions.every(q => {
             const value = formData[q.id];
-            if (q.type === 'multi-text') {
-                return value && value.length > 0;
+            let passes = false;
+            
+            if (q.type === 'multi-text' || q.type === 'date-list') {
+                passes = Array.isArray(value) && value.length > 0;
+            } else {
+                passes = value !== undefined && value !== '' && value !== null;
             }
-            return value !== undefined && value !== '';
+            
+            if (!passes) {
+                console.log(`Question "${q.id}" failed validation. Value:`, value, 'Type:', q.type);
+            }
+            
+            return passes;
         });
+
+        if (!result) {
+            console.log('Cannot proceed: Form validation failed');
+        }
+        
+        return result;
+    };
+
+    const getIncompleteFields = () => {
+        if (!selectedRole) return ['No role selected'];
+
+        const config = ROLE_CONFIG[selectedRole];
+        const requiredQuestions = config.onboardingQuestions.filter(q => q.required);
+        const incomplete = [];
+
+        requiredQuestions.forEach(q => {
+            const value = formData[q.id];
+            let passes = false;
+            
+            if (q.type === 'multi-text' || q.type === 'date-list') {
+                passes = Array.isArray(value) && value.length > 0;
+            } else {
+                passes = value !== undefined && value !== '' && value !== null;
+            }
+            
+            if (!passes) {
+                incomplete.push(q.question);
+            }
+        });
+
+        return incomplete;
     };
 
     const handleComplete = async () => {
+        const incompleteFields = getIncompleteFields();
+        
+        if (incompleteFields.length > 0) {
+            const fieldList = incompleteFields.join('\n• ');
+            showAlert('Incomplete Form', `Please fill in the following required fields:\n\n• ${fieldList}`, 'warning');
+            console.log('Incomplete fields:', incompleteFields);
+            console.log('Current form data:', formData);
+            return;
+        }
+
         setIsCreating(true);
 
         try {
@@ -120,7 +201,7 @@ function Onboarding({ onComplete }) {
                     <div className="onboarding-header">
                         <div className="logo-container">
                             <div className="logo-icon">
-                                <Zap size={32} fill="white" />
+                                <img src="/Gemini_Generated_Image_k7yesqk7yesqk7ye.png" alt="Focusly Logo" />
                             </div>
                             <h1 className="logo-text">Focusly</h1>
                         </div>
@@ -246,14 +327,59 @@ function Onboarding({ onComplete }) {
                                                     </div>
                                                 ))}
                                             </div>
+                                            <div className="multi-text-input-wrapper">
+                                                <input
+                                                    type="text"
+                                                    className="input"
+                                                    placeholder={question.placeholder}
+                                                    ref={(el) => { multiTextRefs.current[question.id] = el; }}
+                                                    onKeyPress={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
+                                                            handleMultiTextAdd(question.id, e.target.value);
+                                                            e.target.value = '';
+                                                        }
+                                                    }}
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="multi-text-add-btn"
+                                                    onClick={() => {
+                                                        const input = multiTextRefs.current[question.id];
+                                                        if (input && input.value) {
+                                                            handleMultiTextAdd(question.id, input.value);
+                                                            input.value = '';
+                                                            input.focus();
+                                                        }
+                                                    }}
+                                                    title="Add item"
+                                                >
+                                                    <Plus size={18} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {question.type === 'date-list' && (
+                                        <div className="date-list-input">
+                                            <div className="date-list">
+                                                {(formData[question.id] || []).map((item, index) => (
+                                                    <div key={index} className="date-list-item">
+                                                        <span>{item}</span>
+                                                        <X
+                                                            size={14}
+                                                            className="date-list-remove"
+                                                            onClick={() => handleDateRemove(question.id, index)}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
                                             <input
-                                                type="text"
+                                                type="date"
                                                 className="input"
-                                                placeholder={question.placeholder}
-                                                onKeyPress={(e) => {
-                                                    if (e.key === 'Enter') {
-                                                        e.preventDefault();
-                                                        handleMultiTextAdd(question.id, e.target.value);
+                                                onChange={(e) => {
+                                                    if (e.target.value) {
+                                                        handleDateAdd(question.id, e.target.value);
                                                         e.target.value = '';
                                                     }
                                                 }}
@@ -267,7 +393,7 @@ function Onboarding({ onComplete }) {
                         <div className="onboarding-actions">
                             <button
                                 className="btn btn-primary"
-                                disabled={!canProceed() || isCreating}
+                                disabled={isCreating}
                                 onClick={handleComplete}
                             >
                                 {isCreating ? 'Creating...' : 'Get Started'}

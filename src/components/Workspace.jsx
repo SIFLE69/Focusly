@@ -106,7 +106,7 @@ function Workspace({ workspaceId }) {
                 <div className="sidebar-header">
                     <div className="logo-small">
                         <div className="logo-icon-small">
-                            <Zap size={16} fill="white" />
+                            <img src="/Gemini_Generated_Image_k7yesqk7yesqk7ye.png" alt="Focusly Logo" />
                         </div>
                         <span>Focusly</span>
                     </div>

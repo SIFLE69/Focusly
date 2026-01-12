@@ -78,6 +78,13 @@
   background: var(--color-accent);
   border-radius: 7px;
   color: white;
+  overflow: hidden;
+}
+
+.logo-icon-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .sidebar-nav {
@@ -156,8 +163,8 @@
 }
 
 .streak-label {
-  font-size: 11px;
-  color: var(--grey-500);
+  font-size: 12px;
+  color: var(--grey-300);
 }
 
 .stat-header {
@@ -165,11 +172,10 @@
 }
 
 .stat-label {
-  font-size: 10px;
-  font-weight: var(--font-weight-bold);
-  color: var(--grey-500);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--grey-300);
+  letter-spacing: 0.02em;
 }
 
 .stat-value {
@@ -208,12 +214,13 @@
 .main-content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-12) var(--space-16);
+  padding: var(--space-12) 0;
   background: var(--color-bg-primary);
 }
 
 .view-header {
   margin-bottom: var(--space-8);
+  padding: 0 var(--space-16);
 }
 
 .view-header h1 {
@@ -233,6 +240,7 @@
 .today-view {
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 var(--space-16);
 }
 
 .capacity-card {
@@ -384,7 +392,15 @@
 /* === RESPONSIVE === */
 @media (max-width: 1024px) {
   .main-content {
-    padding: var(--space-10) var(--space-8);
+    padding: var(--space-10) 0;
+  }
+
+  .view-header {
+    padding: 0 var(--space-8);
+  }
+
+  .today-view {
+    padding: 0 var(--space-8);
   }
 }
 
@@ -402,7 +418,15 @@
   }
   
   .main-content {
-    padding: var(--space-6) var(--space-4) 100px;
+    padding: var(--space-6) 0 100px;
+  }
+
+  .view-header {
+    padding: 0 var(--space-4);
+  }
+
+  .today-view {
+    padding: 0 var(--space-4);
   }
 
   .view-header h1 {

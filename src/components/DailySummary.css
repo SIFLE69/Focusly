@@ -20,6 +20,13 @@
   justify-content: center;
   margin: 0 auto var(--space-4);
   box-shadow: 0 8px 16px rgba(var(--color-primary-rgb), 0.3);
+  overflow: hidden;
+}
+
+.logo-icon-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .summary-header h1 {

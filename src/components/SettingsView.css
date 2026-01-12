@@ -1,6 +1,7 @@
 .settings-view {
   max-width: 800px;
   margin: 0 auto;
+  padding: 0 var(--space-16);
 }
 
 .settings-container {
@@ -20,15 +21,15 @@
   align-items: center;
   gap: var(--space-3);
   padding-left: var(--space-2);
-  color: var(--grey-500);
+  color: var(--color-accent);
 }
 
 .section-header h3 {
-  font-size: 14px;
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 15px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.02em;
   margin: 0;
+  color: #ffffff;
 }
 
 .settings-list {
@@ -65,8 +66,8 @@
 }
 
 .setting-desc {
-  font-size: 13px;
-  color: var(--grey-500);
+  font-size: 14px;
+  color: var(--grey-300);
 }
 
 .action-item {

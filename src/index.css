@@ -1,7 +1,6 @@
-@import "tailwindcss";
-
 /* === GOOGLE FONTS IMPORT === */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
 
 /* ========================================
    FOCUSLY - APPLE-INSPIRED DESIGN SYSTEM
@@ -125,6 +124,11 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);
@@ -133,6 +137,11 @@ body {
   overflow-x: hidden;
   letter-spacing: -0.01em;
   line-height: var(--line-height-normal);
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 /* === APPLE-STYLE SCROLLBAR === */
@@ -266,7 +275,7 @@ p {
 }
 
 .input::placeholder {
-  color: var(--grey-600);
+  color: var(--grey-500);
 }
 
 /* === BADGE SYSTEM === */

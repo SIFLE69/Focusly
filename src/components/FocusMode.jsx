@@ -111,9 +111,11 @@ function FocusMode({ workspaceId, workspace, onRefresh }) {
         return <LoaderOne />;
     }
 
-    const progress = mode === 'task'
+    const progress = mode === 'task' && activeTask
         ? (timeLeft / (activeTask.estimatedDuration * 60)) * 100
-        : (timeLeft / (sessionType === 'work' ? 25 * 60 : (pomodoroCount % 4 === 0 ? 15 * 60 : 5 * 60))) * 100;
+        : mode === 'pomodoro'
+        ? (timeLeft / (sessionType === 'work' ? 25 * 60 : (pomodoroCount % 4 === 0 ? 15 * 60 : 5 * 60))) * 100
+        : 0;
 
     const strokeDashoffset = 880 - (880 * progress) / 100;
 
@@ -124,7 +126,7 @@ function FocusMode({ workspaceId, workspace, onRefresh }) {
                 <div className="focus-mode-switcher">
                     <button
                         className={cn("mode-btn", mode === 'task' && "active")}
-                        onClick={() => { setMode('task'); setTimeLeft(activeTask.estimatedDuration * 60); }}
+                        onClick={() => { setMode('task'); if (activeTask) setTimeLeft(activeTask.estimatedDuration * 60); }}
                     >
                         Task Timer
                     </button>
@@ -170,15 +172,22 @@ function FocusMode({ workspaceId, workspace, onRefresh }) {
                 </div>
 
                 {/* Task Details */}
-                <div className="focus-task-details">
-                    <div className="task-header">
-                        <span className={cn("text-xs font-bold uppercase tracking-widest", `text-${activeTask.priority}`)}>
-                            {activeTask.priority}
-                        </span>
+                {activeTask ? (
+                    <div className="focus-task-details">
+                        <div className="task-header">
+                            <span className={cn("text-xs font-bold uppercase tracking-widest", `text-${activeTask.priority}`)}>
+                                {activeTask.priority}
+                            </span>
+                        </div>
+                        <h2>{activeTask.name}</h2>
+                        <p>{activeTask.description || 'No description provided'}</p>
                     </div>
-                    <h2>{activeTask.name}</h2>
-                    <p>{activeTask.description || 'No description provided'}</p>
-                </div>
+                ) : (
+                    <div className="focus-task-details">
+                        <h2>No tasks available</h2>
+                        <p>Create a task to get started with focus mode.</p>
+                    </div>
+                )}
 
                 {/* Controls */}
                 <div className="focus-controls-section">

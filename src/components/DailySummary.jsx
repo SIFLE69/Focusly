@@ -48,7 +48,7 @@ function DailySummary({ workspaceId, onComplete }) {
         <div className="daily-summary animate-spring">
             <header className="summary-header">
                 <div className="logo-icon-small">
-                    <Zap size={24} fill="currentColor" />
+                    <img src="/Gemini_Generated_Image_k7yesqk7yesqk7ye.png" alt="Focusly Logo" />
                 </div>
                 <h1>Daily Summary</h1>
                 <p>Execution audit for {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</p>
